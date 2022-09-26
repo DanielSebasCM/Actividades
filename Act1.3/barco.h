@@ -6,25 +6,32 @@
 #include <string>
 
 class Barco{
-	public:
-		int minuto;
-		int hora;
-		int dia;
-		int mes;
-		int anio;
+	private:
+		int minuto, hora, dia, mes, anio;
 		char entrada;
 		std::string UBI;
 	
+	public:
 		Barco(std::string, std::string, char, std::string);
 		Barco();
 		Barco(const Barco&);
-		bool isOlderThan(const Barco&);
+
+		// Accessor methods
+		int get_minuto() const;
+		int get_hora() const;
+		int get_dia() const;
+		int get_mes() const;
+		int get_anio() const;
+		char get_entrada() const;
+		std::string get_UBI() const;
 
 		void set_time(std::string);
 		void set_date(std::string);
 		void set_entrada(char);
 		void set_UBI(std::string);
 
+
+		// Operator override
         bool operator < (const Barco&);
 
 };
@@ -61,37 +68,51 @@ Barco::Barco(const Barco& right){
 	UBI = right.UBI;
 }
 
-bool Barco::operator < (const Barco& right){
-    return isOlderThan(right);
+int Barco::get_minuto() const{
+	return minuto;
 }
 
-bool Barco::isOlderThan(const Barco& right){
-	if(anio < right.anio)
-		return true;
-	else if(anio > right.anio)
-		return false;
+int Barco::get_hora() const{
+	return hora;
+}
+
+int Barco::get_dia() const{
+	return dia;
+}
+
+int Barco::get_mes() const{
+	return mes;
+}
+
+int Barco::get_anio() const{
+	return anio;
+}
+
+char Barco::get_entrada() const{
+	return entrada;
+}
+
+std::string Barco::get_UBI() const{
+	return UBI;
+}
+
+bool Barco::operator < (const Barco& right){
+    if(anio != right.anio)
+		return anio < right.get_anio();
     
-	if(mes < right.mes)
-		return true;
-	else if(mes > right.mes)
-		return false;
+	if(mes != right.mes)
+		return mes < right.get_mes();
 
-	if(dia < right.dia)
-		return true;
-	else if(dia > right.dia)
-		return false;
+	if(dia != right.dia)
+		return dia < right.get_dia();
 
-  	if(hora < right.hora)
-		return true;
-	else if(hora > right.hora)
-		return false;
+	if(hora != right.hora)
+		return hora < right.get_hora();
 
-	if(minuto < right.minuto)
-		return true;
-	else if(minuto > right.minuto)
-		return false;  
-
-	return true;
+	if(minuto != right.minuto)
+		return minuto < right.get_minuto();
+    
+    return false;
 }
 
 void Barco::set_time(std::string time){
@@ -108,12 +129,12 @@ void Barco::set_date(std::string date){
 std::ostream& operator << (std::ostream &out, const Barco &barco)
 {
     out << std::setfill('0');
-    out << std::setw(2) << barco.dia << "-";
-    out << std::setw(2) << barco.mes << "-";
-    out << std::setw(2) << barco.anio << " ";
-    out << std::setw(2) << barco.hora << ":";
-    out << std::setw(2) << barco.minuto << " ";
-    out << barco.entrada << " " << barco.UBI;
+    out << std::setw(2) << barco.get_dia() << "-";
+    out << std::setw(2) << barco.get_mes() << "-";
+    out << std::setw(2) << barco.get_anio() << " ";
+    out << std::setw(2) << barco.get_hora() << ":";
+    out << std::setw(2) << barco.get_minuto() << " ";
+    out << barco.get_entrada() << " " << barco.get_UBI();
     return out;
 }
 

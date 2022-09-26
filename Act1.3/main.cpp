@@ -10,7 +10,6 @@
 #include <fstream>
 #include <vector>
 #include "barco.h"
-#include "sort.h"
 #include <algorithm>
 using namespace std;
 
@@ -48,10 +47,10 @@ int main(int argc, char* argv[]) {
 		Barcos[i] = Barco(date, time, entrada, UBI);
 	}
 
-	functionSort(Barcos);
+	std::sort(Barcos.begin(), Barcos.end());
 
 	for (int i = 0; i < N; i++)
-		if(Barcos[i].UBI.substr(0, 3) == find)
+		if(Barcos[i].get_UBI().substr(0, 3) == find)
 			outputFile << Barcos[i] << '\n';
 	return 0;
 }
