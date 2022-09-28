@@ -247,20 +247,15 @@ T List<T>::last() const
 template <class T>
 T List<T>::get(uint index) const
 {
-	T aux;
 	if (index >= size)
-	{
 		throw IndexOutOfBounds();
-	}
-	Node<T> *p;
-	p = head;
 
-	for (int i = 0; i < index; i++)
+	Node<T> *p = head;
+
+	for (size_t i = 0; i < index; i++)
 		p = p->next;
 
-	aux = p->value;
-
-	return aux;
+	return p->value;
 }
 
 // =================================================================
@@ -319,19 +314,15 @@ void List<T>::insert_at(T val, uint index)
 		throw IndexOutOfBounds();
 
 	if (index == 0)
-	{
-		push_front(val);
-		return;
-	}
+		return push_front(val);
 
 	Node<T> *p, *q;
 	p = head;
 
-	for (int i = 0; i < index - 1; i++)
+	for (size_t i = 0; i < index - 1; i++)
 		p = p->next;
 
-	q = new Node<T>(val);
-	q->next = p->next;
+	q = new Node<T>(val, p->next);
 	p->next = q;
 	size++;
 }
@@ -420,13 +411,10 @@ T List<T>::remove_at(uint index)
 	if (index == 0)
 		return pop_front();
 
-	if (index == size - 1)
-		return pop_back();
-
 	Node<T> *p, *q;
 	p = head;
 
-	for (int i = 0; i < index - 1; i++)
+	for (size_t i = 0; i < index - 1; i++)
 		p = p->next;
 
 	q = p->next;
@@ -454,6 +442,7 @@ long int List<T>::indexOf(T val) const
 	Node<T> *p;
 	p = head;
 	while (p != NULL)
+
 	{
 		if (p->value == val)
 		{
