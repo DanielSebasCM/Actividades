@@ -136,16 +136,15 @@ uint List<T>::length() const
 template <class T>
 bool List<T>::contains(T val) const
 {
-	Node<T> *p;
+	Node<T> *current;
 
-	p = head;
-	while (p != NULL)
+	current = head;
+	while (current != NULL)
 	{
-		if (p->value == val)
-		{
+		if (current->value == val)
 			return true;
-		}
-		p = p->next;
+
+		current = current->next;
 	}
 	return false;
 }
@@ -156,14 +155,14 @@ bool List<T>::contains(T val) const
 template <class T>
 void List<T>::clear()
 {
-	Node<T> *p, *q;
+	Node<T> *current, *next_node;
 
-	p = head;
-	while (p != NULL)
+	current = head;
+	while (current != NULL)
 	{
-		q = p->next;
-		delete p;
-		p = q;
+		next_node = current->next;
+		delete current;
+		current = next_node;
 	}
 
 	head = NULL;
@@ -179,18 +178,17 @@ template <class T>
 std::string List<T>::toString() const
 {
 	std::stringstream aux;
-	Node<T> *p;
+	Node<T> *current;
 
-	p = head;
+	current = head;
 	aux << "[";
-	while (p != NULL)
+	while (current != NULL)
 	{
-		aux << p->value;
-		if (p->next != NULL)
-		{
+		aux << current->value;
+		if (current->next != NULL)
 			aux << ", ";
-		}
-		p = p->next;
+
+		current = current->next;
 	}
 	aux << "]";
 	return aux.str();
@@ -206,9 +204,7 @@ template <class T>
 T List<T>::front() const
 {
 	if (empty())
-	{
 		throw NoSuchElement();
-	}
 
 	return head->value;
 }
@@ -222,19 +218,16 @@ T List<T>::front() const
 template <class T>
 T List<T>::last() const
 {
-	Node<T> *p;
+	Node<T> *current;
 
 	if (empty())
-	{
 		throw NoSuchElement();
-	}
 
-	p = head;
-	while (p->next != NULL)
-	{
-		p = p->next;
-	}
-	return p->value;
+	current = head;
+	while (current->next != NULL)
+		current = current->next;
+
+	return current->value;
 }
 
 // =================================================================
@@ -250,12 +243,12 @@ T List<T>::get(uint index) const
 	if (index >= size)
 		throw IndexOutOfBounds();
 
-	Node<T> *p = head;
+	Node<T> *current = head;
 
 	for (size_t i = 0; i < index; i++)
-		p = p->next;
+		current = current->next;
 
-	return p->value;
+	return current->value;
 }
 
 // =================================================================
@@ -265,11 +258,11 @@ T List<T>::get(uint index) const
 template <class T>
 void List<T>::push_front(T val)
 {
-	Node<T> *q;
+	Node<T> *new_head;
 
-	q = new Node<T>(val);
-	q->next = head;
-	head = q;
+	new_head = new Node<T>(val);
+	new_head->next = head;
+	head = new_head;
 	size++;
 }
 
@@ -280,7 +273,7 @@ void List<T>::push_front(T val)
 template <class T>
 void List<T>::push_back(T val)
 {
-	Node<T> *p, *q;
+	Node<T> *current, *new_tail;
 
 	if (empty())
 	{
@@ -288,15 +281,15 @@ void List<T>::push_back(T val)
 		return;
 	}
 
-	p = head;
-	while (p->next != NULL)
+	current = head;
+	while (current->next != NULL)
 	{
-		p = p->next;
+		current = current->next;
 	}
 
-	q = new Node<T>(val);
-	q->next = p->next;
-	p->next = q;
+	new_tail = new Node<T>(val);
+	new_tail->next = current->next;
+	current->next = new_tail;
 	size++;
 }
 
@@ -316,14 +309,14 @@ void List<T>::insert_at(T val, uint index)
 	if (index == 0)
 		return push_front(val);
 
-	Node<T> *p, *q;
-	p = head;
+	Node<T> *current, *new_node;
+	current = head;
 
 	for (size_t i = 0; i < index - 1; i++)
-		p = p->next;
+		current = current->next;
 
-	q = new Node<T>(val, p->next);
-	p->next = q;
+	new_node = new Node<T>(val, current->next);
+	current->next = new_node;
 	size++;
 }
 
@@ -340,9 +333,7 @@ T List<T>::pop_front()
 	Node<T> *p;
 
 	if (empty())
-	{
 		throw NoSuchElement();
-	}
 
 	p = head;
 
@@ -363,7 +354,7 @@ T List<T>::pop_front()
 template <class T>
 T List<T>::pop_back()
 {
-	Node<T> *p, *q;
+	Node<T> *current, *previous;
 	T val;
 
 	if (empty())
@@ -376,18 +367,18 @@ T List<T>::pop_back()
 		return pop_front();
 	}
 
-	q = NULL;
-	p = head;
-	while (p->next != NULL)
+	previous = NULL;
+	current = head;
+	while (current->next != NULL)
 	{
-		q = p;
-		p = p->next;
+		previous = current;
+		current = current->next;
 	}
 
-	q->next = p->next;
-	val = p->value;
+	previous->next = current->next;
+	val = current->value;
 
-	delete p;
+	delete current;
 	size--;
 
 	return val;
@@ -411,17 +402,17 @@ T List<T>::remove_at(uint index)
 	if (index == 0)
 		return pop_front();
 
-	Node<T> *p, *q;
-	p = head;
+	Node<T> *current, *tmp_node;
+	current = head;
 
 	for (size_t i = 0; i < index - 1; i++)
-		p = p->next;
+		current = current->next;
 
-	q = p->next;
-	aux = q->value;
-	p->next = q->next;
+	tmp_node = current->next;
+	aux = tmp_node->value;
+	current->next = tmp_node->next;
 
-	delete q;
+	delete tmp_node;
 	size--;
 
 	return aux;
@@ -439,16 +430,16 @@ long int List<T>::indexOf(T val) const
 {
 	int index = 0;
 
-	Node<T> *p;
-	p = head;
-	while (p != NULL)
+	Node<T> *current;
+	current = head;
+	while (current != NULL)
 
 	{
-		if (p->value == val)
+		if (current->value == val)
 		{
 			return index;
 		}
-		p = p->next;
+		current = current->next;
 		index++;
 	}
 	return -1;
