@@ -366,6 +366,7 @@ void DoubleLinkedList<T>::insert_before(T lookingFor, T newVal)
 
 			return;
 		}
+
 		current = current->next;
 	}
 
@@ -388,10 +389,13 @@ void DoubleLinkedList<T>::insert_after(T lookingFor, T newVal)
 		if (current->value == lookingFor)
 		{
 			Node<T> *newNode = new Node<T>(newVal, current, current->next);
+
 			if (current->next != nullptr)
 				current->next->previous = newNode;
+
 			current->next = newNode;
 			size++;
+
 			return;
 		}
 		current = current->next;
