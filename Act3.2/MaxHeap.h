@@ -36,6 +36,12 @@ public:
 };
 
 template <class T>
+/**
+ * @brief Swaps elements at i and j
+ * Complexity O(1)
+ * @param i
+ * @param j
+ */
 void MaxHeap<T>::swap(uint i, uint j)
 {
     T temp = hvec[i];
@@ -44,38 +50,59 @@ void MaxHeap<T>::swap(uint i, uint j)
 }
 
 template <class T>
+/**
+ * @brief Size of the heap
+ * Complexity O(1)
+ * @return uint
+ */
 uint MaxHeap<T>::size() const
 {
     return hvec.size();
 }
 
 template <class T>
+/**
+ * @brief Returns True if the heap is empty
+ * Complexity O(1)
+ * @return true
+ * @return false
+ */
 bool MaxHeap<T>::empty() const
 {
     return hvec.empty();
 }
 
 template <class T>
+/**
+ * @brief Pushes the i element down the heap into its correct place
+ * Complexity O(log N)
+ * @param i
+ */
 void MaxHeap<T>::heapify(uint i)
 {
     uint le = left(i);
     uint ri = right(i);
-    uint smallest = i;
+    uint max = i;
 
-    if (le < hvec.size() && hvec[le] > hvec[i])
-        smallest = le;
+    if (le < hvec.size() && hvec[le] > hvec[max])
+        max = le;
 
-    if (ri < hvec.size() && hvec[ri] > hvec[smallest])
-        smallest = ri;
+    if (ri < hvec.size() && hvec[ri] > hvec[max])
+        max = ri;
 
-    if (i != smallest)
+    if (i != max)
     {
-        swap(i, smallest);
-        heapify(smallest);
+        swap(i, max);
+        heapify(max);
     }
 }
 
 template <class T>
+/**
+ * @brief Returns the top element in the heap
+ * Complexity O(1)
+ * @return T
+ */
 T MaxHeap<T>::top() const
 {
     if (empty())
@@ -86,6 +113,11 @@ T MaxHeap<T>::top() const
 }
 
 template <class T>
+/**
+ * @brief Inserts val into the heap
+ * Complexity O(log N)
+ * @param val
+ */
 void MaxHeap<T>::push(T val)
 {
     hvec.push_back(val);
@@ -98,6 +130,10 @@ void MaxHeap<T>::push(T val)
 }
 
 template <class T>
+/**
+ * @brief Removes the top element
+ * Complexity O(log N)
+ */
 void MaxHeap<T>::pop()
 {
     if (empty())
@@ -109,6 +145,11 @@ void MaxHeap<T>::pop()
 }
 
 template <class T>
+/**
+ * @brief Transforms heap to string
+ * Complexity O(N)
+ * @return std::string
+ */
 std::string MaxHeap<T>::toString() const
 {
     std::stringstream aux;
