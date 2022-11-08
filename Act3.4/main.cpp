@@ -44,12 +44,12 @@ int main(int argc, char *argv[])
 	}
 
 	int acum = 0;
-	int temp;
+	int sum;
 	while (heap.size() > 1)
 	{
-		temp = heap.pop() + heap.pop() - 1;
-		heap.push(temp);
-		acum += temp;
+		sum = heap.pop() + heap.pop();
+		heap.push(sum);
+		acum += sum - 1;
 	}
 	outputFile << acum << std::endl;
 }
