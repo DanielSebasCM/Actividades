@@ -6,13 +6,17 @@
 #include <stack>
 #include <queue>
 #include <iostream>
+#include <fstream>
+#include "UGraph.h"
 
 template <class T>
-class UnweightedMatrixGraph
+class UMatrixGraph : public UGraph<T>
 {
 public:
-    UnweightedMatrixGraph(int, bool dir = false);
-    ~UnweightedMatrixGraph();
+    UMatrixGraph(int, bool dir = false);
+    ~UMatrixGraph();
+
+    void loadGraph(int, std::ifstream &);
 
     void addEdge(T, T);
     void removeEdge(T, T);
@@ -21,8 +25,6 @@ public:
     bool isEdge(T, T) const;
     bool isVertex(T) const;
 
-    int getIndexOf(T) const;
-
     std::vector<T> getVertexes() const;
     std::vector<T> getNeighbours(T) const;
 
@@ -30,7 +32,7 @@ public:
     std::set<T> bfs(T) const;
 
     template <class U>
-    friend std::ostream &operator<<(std::ostream &, UnweightedMatrixGraph<U> &);
+    friend std::ostream &operator<<(std::ostream &, UMatrixGraph<U> &);
 
 private:
     int size;
@@ -38,5 +40,7 @@ private:
     bool directed;
     std::vector<T> vertexes;
     std::vector<std::vector<bool>> edges;
+
+    int getIndexOf(T) const;
 };
 #endif

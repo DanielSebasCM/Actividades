@@ -1,8 +1,8 @@
-#include "U_MatrixGraph.cpp"
+#include "UMatrixGraph.cpp"
 
 int main(int argc, char *argv[])
 {
-    UnweightedMatrixGraph<char> graph(5, true);
+    UMatrixGraph<char> graph(5, true);
     graph.addVertex('A');
     graph.addVertex('B');
     graph.addVertex('C');

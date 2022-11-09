@@ -1,5 +1,5 @@
-#ifndef U_GRAPH_H
-#define U_GRAPH_H
+#ifndef UGRAPH_H
+#define UGRAPH_H
 
 #include <vector>
 #include <set>
@@ -8,7 +8,7 @@
 #include <iostream>
 
 template <class T>
-class UnweightedGraph
+class UGraph
 {
 public:
     virtual void addEdge(T, T) = 0;
