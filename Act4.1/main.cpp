@@ -1,8 +1,9 @@
 #include "UMatrixGraph.cpp"
+#include "UListGraph.cpp"
 
 int main(int argc, char *argv[])
 {
-    UMatrixGraph<char> graph(5, true);
+    UListGraph<char> graph(true);
     graph.addVertex('A');
     graph.addVertex('B');
     graph.addVertex('C');

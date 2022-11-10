@@ -36,28 +36,6 @@ UMatrixGraph<T>::~UMatrixGraph()
 }
 
 /**
- * @brief Loads a graph from a file
- *
- * @tparam T Type of the names of Vertexes
- * @param cap Max number of Vertexes
- * @param file File to load from
- */
-template <class T>
-void UMatrixGraph<T>::loadGraph(int n, std::ifstream &inputFile)
-{
-    size = n;
-    int iFrom, iTo;
-
-    inputFile >> iFrom >> iTo;
-
-    while (iFrom && iTo)
-    {
-        inputFile >> iFrom >> iTo;
-        addEdge(iFrom, iTo);
-    }
-}
-
-/**
  * @brief Adds an edge between two Vertexes
  *
  * @param from Source Vertex
@@ -95,7 +73,7 @@ template <class T>
 void UMatrixGraph<T>::removeEdge(T from, T to)
 {
     if (!isVertex(from) || !isVertex(to))
-        throw std::invalid_argument("Vertex not found");
+        return;
 
     int i1 = getIndexOf(from);
     int i2 = getIndexOf(to);
@@ -115,6 +93,9 @@ void UMatrixGraph<T>::removeEdge(T from, T to)
 template <class T>
 void UMatrixGraph<T>::addVertex(T v)
 {
+    if (isVertex)
+        return;
+
     if (size < capacity)
     {
         vertexes[size++] = v;
@@ -136,7 +117,7 @@ template <class T>
 void UMatrixGraph<T>::removeVertex(T v)
 {
     if (!isVertex(v))
-        throw std::invalid_argument("Vertex not found");
+        return;
 
     int index = getIndexOf(v);
     for (int i = index; i < size - 1; i++)
@@ -167,7 +148,7 @@ template <class T>
 bool UMatrixGraph<T>::isEdge(T from, T to) const
 {
     if (!isVertex(from) || !isVertex(to))
-        throw std::invalid_argument("Vertex not found");
+        return false;
 
     int iFrom = getIndexOf(from);
     int iTo = getIndexOf(to);
@@ -186,12 +167,7 @@ bool UMatrixGraph<T>::isEdge(T from, T to) const
 template <class T>
 bool UMatrixGraph<T>::isVertex(T v) const
 {
-    for (int i = 0; i < size; i++)
-    {
-        if (vertexes[i] == v)
-            return true;
-    }
-    return false;
+    return vertexes.find(v) != vertexes.end();
 }
 
 /**
@@ -223,7 +199,8 @@ int UMatrixGraph<T>::getIndexOf(T v) const
 template <class T>
 std::vector<T> UMatrixGraph<T>::getVertexes() const
 {
-    return vertexes;
+    return std::vector<T>(vertexes.begin(), vertexes.end());
+    ;
 }
 
 /**
@@ -251,80 +228,6 @@ std::vector<T> UMatrixGraph<T>::getNeighbours(T v) const
 }
 
 /**
- * @brief Returns a set with all the vertexes in the graph and prints the
- *        vectors in depth first order from an starting vertex
- *
- * @param v Starting vertex name
- * @return std::set<T>
- *
- * Complexity: O(size^2)
- */
-template <class T>
-std::set<T> UMatrixGraph<T>::dfs(T v) const
-{
-    if (!isVertex(v))
-        throw std::invalid_argument("Vertex not found");
-
-    std::set<T> visited;
-    std::stack<T> toSearch;
-    toSearch.push(v);
-
-    T current;
-    while (!toSearch.empty())
-    {
-        current = toSearch.top();
-        toSearch.pop();
-        if (visited.find(current) == visited.end())
-        {
-            std::cout << vertexes[getIndexOf(current)] << " ";
-            visited.insert(current);
-            for (auto elem : getNeighbours(current))
-                toSearch.push(elem);
-        }
-    }
-    std::cout << std::endl;
-
-    return visited;
-}
-
-/**
- * @brief Returns a set with all the vertexes in the graph and prints the
- *        vectors in breadth first order from an starting vertex
- *
- * @param v Starting vertex name
- * @return std::set<T>
- *
- * Complexity: O(size^2)
- */
-template <class T>
-std::set<T> UMatrixGraph<T>::bfs(T v) const
-{
-    if (!isVertex(v))
-        throw std::invalid_argument("Vertex not found");
-
-    std::set<T> visited;
-    std::queue<T> toSearch;
-    toSearch.push(v);
-
-    T current;
-    while (!toSearch.empty())
-    {
-        current = toSearch.front();
-        toSearch.pop();
-        if (visited.find(current) == visited.end())
-        {
-            std::cout << vertexes[getIndexOf(current)] << " ";
-            visited.insert(current);
-            for (auto elem : getNeighbours(current))
-                toSearch.push(elem);
-        }
-    }
-    std::cout << std::endl;
-
-    return visited;
-}
-
-/**
  * @brief Overload for stream printing of graphs
  *
  * @return std::ostream&
@@ -332,13 +235,18 @@ std::set<T> UMatrixGraph<T>::bfs(T v) const
 template <class T>
 std::ostream &operator<<(std::ostream &os, UMatrixGraph<T> &graph)
 {
+    os << "   ";
+    for (auto v : graph.vertexes)
+        os << v << " ";
+
+    os << '\n';
+
     for (int i = 0; i < graph.size; i++)
     {
         os << graph.vertexes[i] << ": ";
         for (int j = 0; j < graph.size; j++)
         {
-            if (graph.edges[i][j])
-                os << graph.vertexes[j] << " ";
+            os << graph.edges[i][j] << " ";
         }
         os << std::endl;
     }

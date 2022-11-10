@@ -1,7 +1,8 @@
-#ifndef UMATRIXGRAPH_H
-#define UMATRIXGRAPH_H
+#ifndef ULISTGRAPH_H
+#define ULISTGRAPH_H
 
 #include <vector>
+#include <map>
 #include <set>
 #include <stack>
 #include <queue>
@@ -10,13 +11,11 @@
 #include "UGraph.h"
 
 template <class T>
-class UMatrixGraph : public UGraph<T>
+class UListGraph : public UGraph<T>
 {
 public:
-    UMatrixGraph(int, bool dir = false);
-    ~UMatrixGraph();
-
-    void loadGraph(int, std::ifstream &);
+    UListGraph(bool dir = false);
+    ~UListGraph();
 
     void addEdge(T, T);
     void removeEdge(T, T);
@@ -29,15 +28,12 @@ public:
     std::vector<T> getNeighbours(T) const;
 
     template <class U>
-    friend std::ostream &operator<<(std::ostream &, UMatrixGraph<U> &);
+    friend std::ostream &operator<<(std::ostream &, UListGraph<U> &);
 
 private:
     int size;
-    int capacity;
     bool directed;
-    std::vector<T> vertexes;
-    std::vector<std::vector<bool>> edges;
-
-    int getIndexOf(T) const;
+    std::set<T> vertexes;
+    std::map<T, std::set<T>> edges;
 };
 #endif
