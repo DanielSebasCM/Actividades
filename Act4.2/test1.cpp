@@ -6,13 +6,13 @@
 
 using namespace std;
 
-TEST_CASE("testing exercise 2", "[exercise2]")
+TEST_CASE("testing exercise 1", "[exercise1]")
 {
 	int n, from, to;
 	ifstream input;
 	UListGraph<int> *graph;
 
-	input.open("input2.txt");
+	input.open("input1.txt");
 	input >> n;
 	graph = new UListGraph<int>(n);
 
@@ -26,7 +26,7 @@ TEST_CASE("testing exercise 2", "[exercise2]")
 		graph->addEdge(from, to);
 	}
 
-	REQUIRE(topologicalSort(graph) == "[0 1 4 8 2 5 3 6 7 9 11 12 13 10 15 14 16 17]");
+	REQUIRE(topologicalSort(graph) == "[1 2 3 4 5 12 8 6 10 7 9 13 11 15 16 14 19 17 20 18]");
 	REQUIRE(isBipartite(graph) == false);
 	REQUIRE(isCyclic(graph) == false);
 	REQUIRE(isTree(graph) == false);
