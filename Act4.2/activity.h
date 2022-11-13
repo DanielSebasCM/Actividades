@@ -134,39 +134,17 @@ bool isTree(const UnweightedGraph<Vertex> *graph)
   if (isCyclic(graph))
     return false;
 
-  std::set<Vertex> remaining(graph->getVertexes().begin(), graph->getVertexes().end());
-  std::stack<Vertex> q;
+  std::set<Vertex> seen;
 
   for (auto v : graph->getVertexes())
-  {
-    if (remaining.find(v) != remaining.end())
-    {
-      q.push(v);
-      break;
-    }
-
     for (auto v2 : graph->getConnectionFrom(v))
-      remaining.erase(v2);
-  }
-}
+      seen.insert(v2);
 
-template <class Vertex>
-bool isTreeAux(const UnweightedGraph<Vertex> *graph)
-{
-  if (isCyclic(graph))
-    return false;
+  std::set<int> result;
+  std::set_difference(graph->getVertexes().begin(), graph->getVertexes().end(),
+                      seen.begin(), seen.end(),
+                      std::inserter(result, result.end()));
 
-  std::set<Vertex> toCheck(graph->getVertexes().begin(), graph->getVertexes().end());
-
-  for (auto v : graph->getVertexes())
-  {
-    if (toCheck.find(v) != toCheck.end())
-      continue;
-
-    for (auto v2 : graph->getConnectionFrom(v))
-      toCheck.erase(v2);
-  }
-
-  return toCheck.size() == 1;
+  return result.size() == 1;
 }
 #endif /* ACTIVITY_H */

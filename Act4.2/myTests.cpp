@@ -2,15 +2,14 @@
 #include <iostream>
 #include <fstream>
 #include "activity.h"
-
 using namespace std;
-int main()
+void run(string inputFile)
 {
     int n, from, to;
     ifstream input;
     UListGraph<int> *graph;
 
-    input.open("myInput.txt");
+    input.open(inputFile);
     input >> n;
     graph = new UListGraph<int>(n);
 
@@ -24,11 +23,19 @@ int main()
         graph->addEdge(from, to);
     }
 
-    cout << "Graph" << endl
-         << graph->toString() << endl;
+    cout << inputFile << endl;
     cout << "Topological Sort: " << topologicalSort(graph) << endl;
     cout << "Is Bipartite: " << isBipartite(graph) << endl;
     cout << "Is Cyclic: " << isCyclic(graph) << endl;
     cout << "Is Tree: " << isTree(graph) << endl;
     delete graph;
+}
+
+int main()
+{
+    run("input1.txt");
+    run("input2.txt");
+    run("input3.txt");
+    run("input4.txt");
+    return 0;
 }
