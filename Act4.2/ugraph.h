@@ -274,11 +274,11 @@ std::string UListGraph<Vertex>::toString() const
 /***********************************************************/
 
 template <class Vertex>
-std::set<Vertex> dfs(const Vertex &start,
-					 const UnweightedGraph<Vertex> *graph)
+std::vector<Vertex> dfs(const Vertex &start,
+						const UnweightedGraph<Vertex> *graph)
 {
 
-	std::set<Vertex> visited;
+	std::vector<Vertex> visited;
 	std::stack<Vertex> pending;
 	typename std::set<Vertex>::iterator itr;
 
@@ -287,9 +287,9 @@ std::set<Vertex> dfs(const Vertex &start,
 	{
 		Vertex v = pending.top();
 		pending.pop();
-		if (visited.find(v) == visited.end())
+		if (std::find(visited.begin(), visited.end(), v) == visited.end())
 		{
-			visited.insert(v);
+			visited.push_back(v);
 			std::set<Vertex> connected =
 				graph->getConnectionFrom(v);
 			for (itr = connected.begin();
@@ -307,9 +307,9 @@ std::set<Vertex> dfs(const Vertex &start,
 /***********************************************************/
 
 template <class Vertex>
-std::set<Vertex> bfs(const Vertex &start, const UnweightedGraph<Vertex> *graph)
+std::vector<Vertex> bfs(const Vertex &start, const UnweightedGraph<Vertex> *graph)
 {
-	std::set<Vertex> visited;
+	std::vector<Vertex> visited;
 	std::queue<Vertex> pending;
 	typename std::set<Vertex>::iterator itr;
 
@@ -318,9 +318,9 @@ std::set<Vertex> bfs(const Vertex &start, const UnweightedGraph<Vertex> *graph)
 	{
 		Vertex v = pending.front();
 		pending.pop();
-		if (visited.find(v) == visited.end())
+		if (std::find(visited.begin(), visited.end(), v) == visited.end())
 		{
-			visited.insert(v);
+			visited.push_back(v);
 			std::set<Vertex> connected =
 				graph->getConnectionFrom(v);
 

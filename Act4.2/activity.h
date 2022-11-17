@@ -131,20 +131,9 @@ bool isCyclic(const UnweightedGraph<Vertex> *graph)
 template <class Vertex>
 bool isTree(const UnweightedGraph<Vertex> *graph)
 {
-  if (isCyclic(graph))
-    return false;
-
-  std::set<Vertex> seen;
-
+  int edges = 0;
   for (auto v : graph->getVertexes())
-    for (auto v2 : graph->getConnectionFrom(v))
-      seen.insert(v2);
-
-  std::set<int> result;
-  std::set_difference(graph->getVertexes().begin(), graph->getVertexes().end(),
-                      seen.begin(), seen.end(),
-                      std::inserter(result, result.end()));
-
-  return result.size() == 1;
+    edges += graph->getConnectionFrom(v).size();
+  return !isCyclic(graph) && graph->getVertexes().size() == edges + 1;
 }
 #endif /* ACTIVITY_H */
