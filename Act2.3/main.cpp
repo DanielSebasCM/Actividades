@@ -76,7 +76,7 @@ int main(int argc, char *argv[])
             else
                 r.push_back(ships[ship_count].get_UBI());
 
-            ship_count
+            ship_count++;
         }
 
         outputFile << months[i - 1] << std::endl;
